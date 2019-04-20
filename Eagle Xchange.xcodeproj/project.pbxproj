@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2E23C0226BB7BB00430B05 /* EventInfo.swift */; };
+		0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */; };
 		0DDD867A226B6A890035E9B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD8679226B6A890035E9B9 /* AppDelegate.swift */; };
 		0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD867B226B6A890035E9B9 /* ViewController.swift */; };
 		0DDD867F226B6A890035E9B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DDD867D226B6A890035E9B9 /* Main.storyboard */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D2E23C0226BB7BB00430B05 /* EventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfo.swift; sourceTree = "<group>"; };
+		0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketmasterEvents.swift; sourceTree = "<group>"; };
 		0DDD8676226B6A890035E9B9 /* Eagle Xchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eagle Xchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DDD8679226B6A890035E9B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DDD867B226B6A890035E9B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 			isa = PBXGroup;
 			children = (
 				0DDD8679226B6A890035E9B9 /* AppDelegate.swift */,
+				0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */,
+				0D2E23C0226BB7BB00430B05 /* EventInfo.swift */,
 				0DDD867B226B6A890035E9B9 /* ViewController.swift */,
 				0DDD867D226B6A890035E9B9 /* Main.storyboard */,
 				0DDD8680226B6A8F0035E9B9 /* Assets.xcassets */,
@@ -77,7 +83,6 @@
 				BF3DF590223A13D6B30FE339 /* Pods-Eagle Xchange.debug.xcconfig */,
 				14F76D45138D33EBC31C52C7 /* Pods-Eagle Xchange.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -228,6 +233,7 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Eagle Xchange/Pods-Eagle Xchange-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
 				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSDKCoreKit/FBSDKCoreKit.framework",
@@ -237,6 +243,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${PODS_ROOT}/TwitterCore/iOS/TwitterCore.framework",
 				"${PODS_ROOT}/TwitterKit/iOS/TwitterKit.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
@@ -248,6 +255,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSDKCoreKit.framework",
@@ -257,6 +265,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterCore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TwitterKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
@@ -276,6 +285,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */,
+				0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */,
 				0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */,
 				0DDD867A226B6A890035E9B9 /* AppDelegate.swift in Sources */,
 			);
