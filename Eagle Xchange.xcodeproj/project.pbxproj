@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2E23C0226BB7BB00430B05 /* EventInfo.swift */; };
+		0D2E23C3226C1CE000430B05 /* ApiCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */; };
 		0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */; };
 		0DDD867A226B6A890035E9B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD8679226B6A890035E9B9 /* AppDelegate.swift */; };
 		0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD867B226B6A890035E9B9 /* ViewController.swift */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		0D2E23C0226BB7BB00430B05 /* EventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfo.swift; sourceTree = "<group>"; };
+		0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCriteria.swift; sourceTree = "<group>"; };
 		0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketmasterEvents.swift; sourceTree = "<group>"; };
 		0DDD8676226B6A890035E9B9 /* Eagle Xchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eagle Xchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DDD8679226B6A890035E9B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			children = (
 				0DDD8679226B6A890035E9B9 /* AppDelegate.swift */,
 				0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */,
+				0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */,
 				0D2E23C0226BB7BB00430B05 /* EventInfo.swift */,
 				0DDD867B226B6A890035E9B9 /* ViewController.swift */,
 				0DDD867D226B6A890035E9B9 /* Main.storyboard */,
@@ -285,6 +288,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D2E23C3226C1CE000430B05 /* ApiCriteria.swift in Sources */,
 				0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */,
 				0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */,
 				0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */,

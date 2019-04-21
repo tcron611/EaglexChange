@@ -10,6 +10,7 @@ import Foundation
 
 struct EventInfo {
     var eventName = ""
+    var dateTime = ""
     var dateOfEvent = ""
     var dateRegistered = ""
     var time = ""
