@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var noEventLabel: UILabel!
     @IBOutlet weak var addManuallyButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-  
+    var activityIndicator = UIActivityIndicatorView()
     var apiCriteria = ApiCriteria(category: "", market: "", keyWordSearch: "", sport: "")
     var events = TicketmasterEvents()
    // var category = ""
@@ -51,6 +51,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUPActivityIndicator()
         pickerView.delegate = self
         pickerView.dataSource = self
         tableView.delegate = self
@@ -60,6 +61,13 @@ class ViewController: UIViewController {
         self.view.sendSubviewToBack(baseballSelectedView)
         self.view.sendSubviewToBack(hockeySelectedView)
         
+    }
+    func setUPActivityIndicator() {
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.style = .whiteLarge
+        activityIndicator.color = UIColor.red
+        view.addSubview(activityIndicator)
     }
     
     func sportsPressed(sportsView: UIView, classificationName: String) {
@@ -179,7 +187,7 @@ class ViewController: UIViewController {
         if regionTextField.text == "Boston Area" {
             apiCriteria.market = greaterBostonArea
         }
-        if regionTextField.text == "Lost Angeles Area" {
+        if regionTextField.text == "Los Angeles Area" {
             apiCriteria.market = greaterLosAngeles
         }
         if regionTextField.text == "New York City Area" {
@@ -188,8 +196,10 @@ class ViewController: UIViewController {
         //market done
         events = TicketmasterEvents(apiCriteria: apiCriteria)
         print(apiCriteria)
+        activityIndicator.startAnimating()
         events.getEvents {
             self.tableView.reloadData()
+            self.activityIndicator.stopAnimating()
         }
     }
 }
@@ -201,10 +211,17 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = events.eventArray[indexPath.row].eventName
+        
+        
+    
         cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
         if indexPath.row == events.eventArray.count - 1 && events.apiUrl != "" {
+            activityIndicator.startAnimating()
+            UIApplication.shared.beginIgnoringInteractionEvents()
             events.getEvents {
                 self.tableView.reloadData()
+                self.activityIndicator.stopAnimating()
+                UIApplication.shared.endIgnoringInteractionEvents()
             }
         }
         return cell
@@ -252,7 +269,6 @@ extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
             return markets[row]
         }
     }
-   
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         var pickerLabel = view as? UILabel //changing pickerView text size
         

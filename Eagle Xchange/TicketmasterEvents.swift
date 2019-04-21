@@ -85,40 +85,44 @@ class TicketmasterEvents {
                         print(self.keyWordSearch)
                         self.suggestion = true
                         self.apiUrl = self.constructApiURL()
-                        Alamofire.request(self.apiUrl).responseJSON { response in
-                            switch response.result {
-                            case .success(let value):
-                                print("Did it get here?")
-                                let json = JSON(value)
-                                //   print(json)
-                                if json["_embedded"]["events"].count == 0 {
-                                    self.apiUrl = ""
-                                } else {
-                                    let numberOfEvents = json["_embedded"]["events"].count
-                                    self.pageNumber += 1
-                                    for index in 0...numberOfEvents - 1 {
-                                        print(index)
-                                        //print(json["_embedded"]["events"][index]["name"])
-                                        let eventName = json["_embedded"]["events"][index]["name"].stringValue
-                                        print(eventName)
-                                        let dateOfEvent = json["_embedded"]["events"][index]["dates"]["start"]["localDate"].stringValue
-                                        print(dateOfEvent)
-                                        //add the rest of the pieces
-                                        let dateTime = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
-                                        let dateRegistered = ""
-                                        let time = json["_embedded"]["events"][index]["dates"]["start"]["localTime"].stringValue
-                                        let location = ""
-                                        let ticketMasterEvent = false
-                                        let eventWebsite = ""
-                                        let price = 0.0
-                                        let contactInfo = ""
-                                        self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: "", time: "", location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
+                        print(self.suggestion)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { //adding a delay because of API spike arrest limit
+                            Alamofire.request(self.apiUrl).responseJSON { response in
+                                switch response.result {
+                                case .success(let value):
+                                    print("Did it get here?")
+                                    let json = JSON(value)
+                                    print(json)
+                                    if json["_embedded"]["events"].count == 0 {
+                                        self.apiUrl = ""
+                                    } else {
+                                        let numberOfEvents = json["_embedded"]["events"].count
+                                        self.pageNumber += 1
+                                        for index in 0...numberOfEvents - 1 {
+                                            print(index)
+                                            //print(json["_embedded"]["events"][index]["name"])
+                                            let eventName = json["_embedded"]["events"][index]["name"].stringValue
+                                            print(eventName)
+                                            let dateOfEvent = json["_embedded"]["events"][index]["dates"]["start"]["localDate"].stringValue
+                                            print(dateOfEvent)
+                                            //add the rest of the pieces
+                                            let dateTime = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
+                                            let dateRegistered = ""
+                                            let time = json["_embedded"]["events"][index]["dates"]["start"]["localTime"].stringValue
+                                            let location = ""
+                                            let ticketMasterEvent = true
+                                            let eventWebsite = ""
+                                            let price = 0.0
+                                            let contactInfo = ""
+                                            self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: "", time: "", location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
+                                            print(self.eventArray)
+                                        }
                                     }
+                                case .failure(let error):
+                                    print("Error: \(error.localizedDescription) failed to get data from url \(self.apiUrl)")
                                 }
-                            case .failure(let error):
-                                print("Error: \(error.localizedDescription) failed to get data from url \(self.apiUrl)")
+                                completed()
                             }
-                            completed()
                         }
                         // end of there is a suggestion and no data section
                     }
@@ -139,14 +143,14 @@ class TicketmasterEvents {
                         print(dateOfEvent)
                         //add the rest of the pieces
                         let dateTime = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
-                        let dateRegistered = ""
+                        let dateRegistered = "Today" //placeholder
                         let time = json["_embedded"]["events"][index]["dates"]["start"]["localTime"].stringValue
                         let location = ""
-                        let ticketMasterEvent = false
+                        let ticketMasterEvent = true
                         let eventWebsite = ""
                         let price = 0.0
                         let contactInfo = ""
-                        self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: "", time: "", location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
+                        self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: dateRegistered, time: time, location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
                     }
                 }
             case .failure(let error):
