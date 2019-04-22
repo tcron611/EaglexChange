@@ -133,8 +133,6 @@ class ViewController: UIViewController {
         }
     }
     
-
-    
     @IBAction func keyWordDonePressed(_ sender: Any) {
         searchButton.isHidden = false
     }
@@ -196,8 +194,11 @@ class ViewController: UIViewController {
         //market done
         events = TicketmasterEvents(apiCriteria: apiCriteria)
         print(apiCriteria)
+        print("MEEP")
         activityIndicator.startAnimating()
+        print("MEEP 2")
         events.getEvents {
+            print("MEEP 3")
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
@@ -212,9 +213,34 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = events.eventArray[indexPath.row].eventName
         
+//        let dateTextString = events.eventArray[indexPath.row].dateOfEvent + " " + events.eventArray[indexPath.row].time
+//        print(dateTextString)
         
-    
-        cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
+        if events.eventArray[indexPath.row].dateTime == "" {
+            cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
+        }
+        else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            let calendar = Calendar.current
+            let date = dateFormatter.date(from:events.eventArray[indexPath.row].dateTime)!
+            let components = calendar.dateComponents([.year, .month, .day, .hour], from: date)
+            let finalDate = calendar.date(from:components)
+            
+            let finalDateFormatter: DateFormatter = {
+                let result = DateFormatter()
+                result.dateStyle = .medium
+                result.timeStyle = .medium
+                return result
+            }()
+            var dateString = finalDateFormatter.string(from: finalDate!)
+            dateString.remove(at: dateString.lastIndex(of: ":")!)
+            dateString.remove(at: dateString.lastIndex(of: "0")!)
+            dateString.remove(at: dateString.lastIndex(of: "0")!)
+            cell.detailTextLabel?.text = dateString
+        }
+       // cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
         if indexPath.row == events.eventArray.count - 1 && events.apiUrl != "" {
             activityIndicator.startAnimating()
             UIApplication.shared.beginIgnoringInteractionEvents()

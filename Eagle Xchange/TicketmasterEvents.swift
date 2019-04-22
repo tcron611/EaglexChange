@@ -31,11 +31,29 @@ class TicketmasterEvents {
     var suggestion = false
     var keyWordSearch = ""
     
+    func removeAnySpaces(string: String) -> String {
+        var newString = string
+        print(string) //testin
+        while newString.contains(" "){
+            print(newString.contains(" "))
+            print("Inside while loop")
+            var index = newString.firstIndex(of: " ")
+            newString.insert("0", at: index!)
+            newString.insert("2", at: index!)
+            newString.insert("%", at: index!)
+            newString.remove(at: newString.firstIndex(of: " ")!)
+            print(newString)
+        }
+        print(newString) //testing
+        return newString
+    }
+    
     func constructApiURL() -> String {
+        print("entered constructApiURL") //Testing
         var category = ""
         if apiCriteria.category == "Sports" {
             if apiCriteria.sport == "" {
-                category = "Sports"
+                category = "&classificationName=Sports"
             }
             else {
                 category = apiCriteria.sport
@@ -57,12 +75,18 @@ class TicketmasterEvents {
         else {
             apiUrl = apiString + category + marketId + keyWordSearch + pageString + String(pageNumber) + sizeString + apiKey
         }
+        print("Right before spaceRemover") //Testing
+        if apiUrl.contains(" ") {
+            apiUrl = removeAnySpaces(string: apiUrl)
+        }
         print(apiUrl)
         return apiUrl
     }
     
     func getEvents(completed: @escaping () -> ()) {
+        print("Entered getEvents") //testing
         apiUrl = constructApiURL()
+        print("constructedApiUrl") //testing
         Alamofire.request(apiUrl).responseJSON { response in
             switch response.result {
             case .success(let value):
