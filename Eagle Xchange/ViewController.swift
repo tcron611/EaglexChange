@@ -60,10 +60,15 @@ class ViewController: UIViewController {
         self.view.sendSubviewToBack(footballSelectedView)
         self.view.sendSubviewToBack(baseballSelectedView)
         self.view.sendSubviewToBack(hockeySelectedView)
-        
     }
+    override func viewWillAppear(_ animated: Bool) {
+       // UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        //  UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+        //Setter for 'statusBarStyle' was deprecated in iOS 9.0: Use -[UIViewController preferredStatusBarStyle]
+    }
+    
     func setUPActivityIndicator() {
-        activityIndicator.center = self.view.center
+        activityIndicator.center = self.tableView.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .whiteLarge
         activityIndicator.color = UIColor.red
