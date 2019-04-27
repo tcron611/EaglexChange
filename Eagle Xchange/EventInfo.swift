@@ -10,14 +10,15 @@ import Foundation
 
 struct EventInfo {
     var eventName = ""
-    var dateTime = ""
-    var dateOfEvent = ""
-    var dateRegistered = ""
-    var time = ""
+    var dateTimeString = ""
+    var dateTime = Date() //make it a date format
+    var dateRegistered = Date()
     var location = ""
-    var ticketMasterEvent = false
+    var categoryOfEvent = ""
+    var eventOrg = ""
     var eventWebsite = ""
     var price = 0.0
     var contactInfo = ""
+    var additionalInfo = ""
     
 }

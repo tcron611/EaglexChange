@@ -10,7 +10,7 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 
-class ViewController: UIViewController {
+class TicketSearchViewController: UIViewController {
 
     @IBOutlet weak var categoryTextField: UITextField!
     @IBOutlet weak var regionLabel: UILabel!
@@ -65,6 +65,15 @@ class ViewController: UIViewController {
        // UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         //  UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         //Setter for 'statusBarStyle' was deprecated in iOS 9.0: Use -[UIViewController preferredStatusBarStyle]
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowTicketmasterEvent" {
+            let destination = segue.destination as! EventDetailViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.eventInfo = events.eventArray[selectedIndexPath.row]
+            destination.addingEvent = true
+        }
     }
     
     func setUPActivityIndicator() {
@@ -126,6 +135,7 @@ class ViewController: UIViewController {
     }
     func categoryChanged() {
         print("Category Changed!")
+        keyWordTextField.text = ""
         if regionTextField.text != "" {
             unhideUIElements()
         }
@@ -139,7 +149,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func keyWordDonePressed(_ sender: Any) {
+        keyWordTextField.resignFirstResponder()
         searchButton.isHidden = false
+        searchButton.isEnabled = true
     }
     
     @IBAction func basketBallPressed(_ sender: UITapGestureRecognizer) {
@@ -171,6 +183,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func SearchButtonPressed(_ sender: UIButton) {
+        keyWordTextField.resignFirstResponder()
+        searchButton.isEnabled = false
         noEventLabel.isHidden = false
         addManuallyButton.isHidden = false
         //setting up api call elements
@@ -199,17 +213,15 @@ class ViewController: UIViewController {
         //market done
         events = TicketmasterEvents(apiCriteria: apiCriteria)
         print(apiCriteria)
-        print("MEEP")
         activityIndicator.startAnimating()
-        print("MEEP 2")
         events.getEvents {
-            print("MEEP 3")
             self.tableView.reloadData()
             self.activityIndicator.stopAnimating()
         }
+        keyWordTextField.text = ""
     }
 }
-extension ViewController: UITableViewDataSource, UITableViewDelegate {
+extension TicketSearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return events.eventArray.count
     }
@@ -217,35 +229,19 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         cell.textLabel?.text = events.eventArray[indexPath.row].eventName
-        
-//        let dateTextString = events.eventArray[indexPath.row].dateOfEvent + " " + events.eventArray[indexPath.row].time
-//        print(dateTextString)
-        
-        if events.eventArray[indexPath.row].dateTime == "" {
-            cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
+        if events.eventArray[indexPath.row].dateTimeString == "" {
+            cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTimeString
         }
         else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-            let calendar = Calendar.current
-            let date = dateFormatter.date(from:events.eventArray[indexPath.row].dateTime)!
-            let components = calendar.dateComponents([.year, .month, .day, .hour], from: date)
-            let finalDate = calendar.date(from:components)
-            
             let finalDateFormatter: DateFormatter = {
                 let result = DateFormatter()
                 result.dateStyle = .medium
-                result.timeStyle = .medium
+                result.timeStyle = .short //may want to add back the medium and then remove the last 3 letters, because now is not including minutes correctly
                 return result
             }()
-            var dateString = finalDateFormatter.string(from: finalDate!)
-            dateString.remove(at: dateString.lastIndex(of: ":")!)
-            dateString.remove(at: dateString.lastIndex(of: "0")!)
-            dateString.remove(at: dateString.lastIndex(of: "0")!)
+            let dateString = finalDateFormatter.string(from: events.eventArray[indexPath.row].dateTime)
             cell.detailTextLabel?.text = dateString
         }
-       // cell.detailTextLabel?.text = events.eventArray[indexPath.row].dateTime
         if indexPath.row == events.eventArray.count - 1 && events.apiUrl != "" {
             activityIndicator.startAnimating()
             UIApplication.shared.beginIgnoringInteractionEvents()
@@ -260,7 +256,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 
-extension ViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+extension TicketSearchViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }

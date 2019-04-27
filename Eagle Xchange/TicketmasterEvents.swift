@@ -33,54 +33,56 @@ class TicketmasterEvents {
     
     func removeAnySpaces(string: String) -> String {
         var newString = string
-        print(string) //testin
         while newString.contains(" "){
             print(newString.contains(" "))
             print("Inside while loop")
-            var index = newString.firstIndex(of: " ")
+            let index = newString.firstIndex(of: " ")
             newString.insert("0", at: index!)
             newString.insert("2", at: index!)
             newString.insert("%", at: index!)
             newString.remove(at: newString.firstIndex(of: " ")!)
             print(newString)
         }
-        print(newString) //testing
         return newString
     }
     
     func constructApiURL() -> String {
-        print("entered constructApiURL") //Testing
         var category = ""
         if apiCriteria.category == "Sports" {
             if apiCriteria.sport == "" {
                 category = "&classificationName=Sports"
-            }
-            else {
+            } else {
                 category = apiCriteria.sport
             }
-        }
-        else {
+        } else {
             category = "&classificationName=" + apiCriteria.category
         }
         let marketId = apiCriteria.market
         if suggestion == true {
             suggestion = false
-        }
-        else {
+        } else {
             keyWordSearch = "&keyword=" + apiCriteria.keyWordSearch
         }
         if pageNumber == 0 {
             apiUrl = apiString + category + marketId + keyWordSearch + apiKey
-        }
-        else {
+        } else {
             apiUrl = apiString + category + marketId + keyWordSearch + pageString + String(pageNumber) + sizeString + apiKey
         }
-        print("Right before spaceRemover") //Testing
         if apiUrl.contains(" ") {
             apiUrl = removeAnySpaces(string: apiUrl)
         }
         print(apiUrl)
         return apiUrl
+    }
+    func getDate(dateTimeString: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        let calendar = Calendar.current
+        let date = dateFormatter.date(from:dateTimeString)
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date!)
+        let finalDate = calendar.date(from:components)!
+        return finalDate
     }
     
     func getEvents(completed: @escaping () -> ()) {
@@ -91,16 +93,9 @@ class TicketmasterEvents {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
-             //   print("****************")
-               // print(json)
-                print("json[embedded]:****************")
-                print(json["_embedded"]["events"])
-                print("NEW COUNT:")
-                print(json["_embedded"]["events"].count)
+
                 //if there are no results on current/next page:
                 if json["_embedded"]["events"].count == 0 {
-                    print(json["spellcheck"]["suggestions"][0]["suggestion"])
-                        //["suggestions"][1]["suggestions"].stringValue)
                     //if there are suggestions:
                     if json["spellcheck"]["suggestions"][0]["suggestion"].stringValue != "" {
                         // keyWordSearch
@@ -114,9 +109,7 @@ class TicketmasterEvents {
                             Alamofire.request(self.apiUrl).responseJSON { response in
                                 switch response.result {
                                 case .success(let value):
-                                    print("Did it get here?")
                                     let json = JSON(value)
-                                    print(json)
                                     if json["_embedded"]["events"].count == 0 {
                                         self.apiUrl = ""
                                     } else {
@@ -124,23 +117,37 @@ class TicketmasterEvents {
                                         self.pageNumber += 1
                                         for index in 0...numberOfEvents - 1 {
                                             print(index)
-                                            //print(json["_embedded"]["events"][index]["name"])
                                             let eventName = json["_embedded"]["events"][index]["name"].stringValue
-                                            print(eventName)
-                                            let dateOfEvent = json["_embedded"]["events"][index]["dates"]["start"]["localDate"].stringValue
-                                            print(dateOfEvent)
                                             //add the rest of the pieces
-                                            let dateTime = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
-                                            let dateRegistered = ""
-                                            let time = json["_embedded"]["events"][index]["dates"]["start"]["localTime"].stringValue
-                                            let location = ""
-                                            let ticketMasterEvent = true
-                                            let eventWebsite = ""
+                                            let dateTimeString = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
+                                            var dateTime: Date
+                                            if dateTimeString == "" {
+                                                dateTime = Date()
+                                            } else {
+                                                dateTime = self.getDate(dateTimeString: dateTimeString)
+                                            }
+                                            let dateRegistered = Date() // make it an actual date
+                                            let location = json["_embedded"]["events"][index]["_embedded"]["venues"][0]["name"].stringValue + ", " + json["_embedded"]["events"][index]["_embedded"]["venues"][0]["city"]["name"].stringValue
+                                            let categoryOfEvent = self.apiCriteria.category
+                                            let eventOrg = "ticketmaster"
+                                            let eventWebsite = json["_embedded"]["events"][index]["url"].stringValue
                                             let price = 0.0
                                             let contactInfo = ""
-                                            self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: "", time: "", location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
+                                            let additionalInfo = ""
+                                            self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, contactInfo: contactInfo, additionalInfo: additionalInfo))
                                             print(self.eventArray)
                                         }
+                                        
+//                                        var eventName = ""
+//                                        var dateTime = ""
+//                                        var dateRegistered = ""
+//                                        var location = ""
+//                                        var categoryOfEvent = ""
+//                                        var eventOrg = ""
+//                                        var eventWebsite = ""
+//                                        var price = 0.0
+//                                        var contactInfo = ""
+//                                        var additionalInfo = ""
                                     }
                                 case .failure(let error):
                                     print("Error: \(error.localizedDescription) failed to get data from url \(self.apiUrl)")
@@ -162,19 +169,24 @@ class TicketmasterEvents {
                         print(index)
                         //print(json["_embedded"]["events"][index]["name"])
                         let eventName = json["_embedded"]["events"][index]["name"].stringValue
-                          print(eventName)
-                        let dateOfEvent = json["_embedded"]["events"][index]["dates"]["start"]["localDate"].stringValue
-                        print(dateOfEvent)
                         //add the rest of the pieces
-                        let dateTime = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
-                        let dateRegistered = "Today" //placeholder
-                        let time = json["_embedded"]["events"][index]["dates"]["start"]["localTime"].stringValue
-                        let location = ""
-                        let ticketMasterEvent = true
-                        let eventWebsite = ""
+                        let dateTimeString = json["_embedded"]["events"][index]["dates"]["start"]["dateTime"].stringValue
+                        var dateTime: Date
+                        if dateTimeString == "" {
+                            dateTime = Date()
+                        } else {
+                             dateTime = self.getDate(dateTimeString: dateTimeString)
+                        }
+                        let dateRegistered = Date() // make it an actual date
+                        let location = json["_embedded"]["events"][index]["_embedded"]["venues"][0]["name"].stringValue + ", " + json["_embedded"]["events"][index]["_embedded"]["venues"][0]["city"]["name"].stringValue
+                        let categoryOfEvent = self.apiCriteria.category
+                        let eventOrg = "ticketmaster"
+                        let eventWebsite = json["_embedded"]["events"][index]["url"].stringValue
                         let price = 0.0
                         let contactInfo = ""
-                        self.eventArray.append(EventInfo(eventName: eventName, dateTime: dateTime, dateOfEvent: dateOfEvent, dateRegistered: dateRegistered, time: time, location: "", ticketMasterEvent: true, eventWebsite: "", price: 0.0, contactInfo: ""))
+                        let additionalInfo = ""
+                        self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, contactInfo: contactInfo, additionalInfo: additionalInfo))
+                        print(self.eventArray)
                     }
                 }
             case .failure(let error):
