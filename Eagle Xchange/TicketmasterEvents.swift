@@ -132,9 +132,10 @@ class TicketmasterEvents {
                                             let eventOrg = "ticketmaster"
                                             let eventWebsite = json["_embedded"]["events"][index]["url"].stringValue
                                             let price = 0.0
+                                            let numTickets = 0
                                             let contactInfo = ""
                                             let additionalInfo = ""
-                                            self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, contactInfo: contactInfo, additionalInfo: additionalInfo))
+                                            self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, numTickets:numTickets, contactInfo: contactInfo, additionalInfo: additionalInfo, postingUserID: "", documentID: ""))
                                             print(self.eventArray)
                                         }
                                         
@@ -183,9 +184,10 @@ class TicketmasterEvents {
                         let eventOrg = "ticketmaster"
                         let eventWebsite = json["_embedded"]["events"][index]["url"].stringValue
                         let price = 0.0
+                        let numTickets = 0
                         let contactInfo = ""
                         let additionalInfo = ""
-                        self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, contactInfo: contactInfo, additionalInfo: additionalInfo))
+                        self.eventArray.append(EventInfo(eventName: eventName, dateTimeString: dateTimeString, dateTime: dateTime, dateRegistered: dateRegistered, location: location, categoryOfEvent: categoryOfEvent, eventOrg: eventOrg, eventWebsite: eventWebsite, price: price, numTickets: numTickets, contactInfo: contactInfo, additionalInfo: additionalInfo, postingUserID: "", documentID: ""))
                         print(self.eventArray)
                     }
                 }

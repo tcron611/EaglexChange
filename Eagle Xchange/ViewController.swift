@@ -62,16 +62,18 @@ class TicketSearchViewController: UIViewController {
         self.view.sendSubviewToBack(hockeySelectedView)
     }
     override func viewWillAppear(_ animated: Bool) {
-       // UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        //  UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
-        //Setter for 'statusBarStyle' was deprecated in iOS 9.0: Use -[UIViewController preferredStatusBarStyle]
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ShowTicketmasterEvent" {
-            let destination = segue.destination as! EventDetailViewController
+            let destination = segue.destination as! EventDetailTableViewController
             let selectedIndexPath = tableView.indexPathForSelectedRow!
             destination.eventInfo = events.eventArray[selectedIndexPath.row]
+            destination.addingEvent = true
+        }
+        if segue.identifier == "AddManualEvent" {
+           let destination = segue.destination as! EventDetailTableViewController
+            destination.eventInfo.eventOrg = "Other"
             destination.addingEvent = true
         }
     }
@@ -220,6 +222,12 @@ class TicketSearchViewController: UIViewController {
         }
         keyWordTextField.text = ""
     }
+    
+    @IBAction func addManuallyPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "AddManualEvent", sender: nil)
+        
+    }
+    
 }
 extension TicketSearchViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

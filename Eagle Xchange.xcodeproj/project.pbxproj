@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		0D0C54862274F4AF001E076B /* EventListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0C54852274F4AF001E076B /* EventListTableViewController.swift */; };
+		0D0C5488227503B1001E076B /* EventDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0C5487227503B1001E076B /* EventDetailTableViewController.swift */; };
+		0D0C548A22757014001E076B /* Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0C548922757014001E076B /* Events.swift */; };
+		0D0C548C22758EC1001E076B /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0C548B22758EC1001E076B /* EventCell.swift */; };
 		0D0CC5AF2274993F0020DD91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D0CC5AE2274993F0020DD91 /* GoogleService-Info.plist */; };
 		0D0CC5B12274CF260020DD91 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0CC5B02274CF260020DD91 /* MenuViewController.swift */; };
 		0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2E23C0226BB7BB00430B05 /* EventInfo.swift */; };
 		0D2E23C3226C1CE000430B05 /* ApiCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */; };
 		0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */; };
-		0DD8D829226EB86200AB31C2 /* EventDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD8D828226EB86200AB31C2 /* EventDetailViewController.swift */; };
 		0DDD867A226B6A890035E9B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD8679226B6A890035E9B9 /* AppDelegate.swift */; };
 		0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDD867B226B6A890035E9B9 /* ViewController.swift */; };
 		0DDD867F226B6A890035E9B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DDD867D226B6A890035E9B9 /* Main.storyboard */; };
@@ -24,12 +26,14 @@
 
 /* Begin PBXFileReference section */
 		0D0C54852274F4AF001E076B /* EventListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventListTableViewController.swift; sourceTree = "<group>"; };
+		0D0C5487227503B1001E076B /* EventDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailTableViewController.swift; sourceTree = "<group>"; };
+		0D0C548922757014001E076B /* Events.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Events.swift; sourceTree = "<group>"; };
+		0D0C548B22758EC1001E076B /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 		0D0CC5AE2274993F0020DD91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0D0CC5B02274CF260020DD91 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		0D2E23C0226BB7BB00430B05 /* EventInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventInfo.swift; sourceTree = "<group>"; };
 		0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiCriteria.swift; sourceTree = "<group>"; };
 		0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketmasterEvents.swift; sourceTree = "<group>"; };
-		0DD8D828226EB86200AB31C2 /* EventDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailViewController.swift; sourceTree = "<group>"; };
 		0DDD8676226B6A890035E9B9 /* Eagle Xchange.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Eagle Xchange.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DDD8679226B6A890035E9B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DDD867B226B6A890035E9B9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -78,11 +82,13 @@
 				0DDD8679226B6A890035E9B9 /* AppDelegate.swift */,
 				0D2E23C0226BB7BB00430B05 /* EventInfo.swift */,
 				0D8C7377226BA6A800204E2B /* TicketmasterEvents.swift */,
+				0D0C548922757014001E076B /* Events.swift */,
 				0D2E23C2226C1CE000430B05 /* ApiCriteria.swift */,
+				0D0C548B22758EC1001E076B /* EventCell.swift */,
 				0D0CC5B02274CF260020DD91 /* MenuViewController.swift */,
 				0DDD867B226B6A890035E9B9 /* ViewController.swift */,
 				0D0C54852274F4AF001E076B /* EventListTableViewController.swift */,
-				0DD8D828226EB86200AB31C2 /* EventDetailViewController.swift */,
+				0D0C5487227503B1001E076B /* EventDetailTableViewController.swift */,
 				0DDD867D226B6A890035E9B9 /* Main.storyboard */,
 				0DDD8680226B6A8F0035E9B9 /* Assets.xcassets */,
 				0DDD8682226B6A8F0035E9B9 /* LaunchScreen.storyboard */,
@@ -301,12 +307,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DD8D829226EB86200AB31C2 /* EventDetailViewController.swift in Sources */,
 				0D2E23C3226C1CE000430B05 /* ApiCriteria.swift in Sources */,
 				0D0C54862274F4AF001E076B /* EventListTableViewController.swift in Sources */,
+				0D0C548C22758EC1001E076B /* EventCell.swift in Sources */,
+				0D0C5488227503B1001E076B /* EventDetailTableViewController.swift in Sources */,
 				0D2E23C1226BB7BB00430B05 /* EventInfo.swift in Sources */,
 				0D0CC5B12274CF260020DD91 /* MenuViewController.swift in Sources */,
 				0D8C7378226BA6A800204E2B /* TicketmasterEvents.swift in Sources */,
+				0D0C548A22757014001E076B /* Events.swift in Sources */,
 				0DDD867C226B6A890035E9B9 /* ViewController.swift in Sources */,
 				0DDD867A226B6A890035E9B9 /* AppDelegate.swift in Sources */,
 			);

@@ -7,84 +7,136 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseUI
+import GoogleSignIn
 
-class EventListTableViewController: UITableViewController {
-
+class EventListViewController: UIViewController {
+    
+    @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var bcViewBorder: UIView!
+    @IBOutlet weak var bcImageView: UIImageView!
+   
+    
+    var events:Events!
+    var originalEvents:Events!
+    var categories = ["Unsorted", "Music", "Sports", "Comedy", "Art & Theatre", "Film"]
+    var categorySort = ""
+    var bcSort = false
+    var favoriteSort = false
+    
     override func viewDidLoad() {
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        tableView.delegate = self
+        tableView.dataSource = self
+        events = Events()
+        self.view.sendSubviewToBack(bcViewBorder)
+        bcViewBorder.isHidden = true
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    
+    override func viewDidAppear(_ animated: Bool) {
+        events.loadData {
+            self.tableView.reloadData()
+        }
+        originalEvents = events
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowEventDetails" {
+            let destination = segue.destination as! EventDetailTableViewController
+            let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.eventInfo = events.eventsArray[selectedIndexPath.row]
+            destination.addingEvent = false
+        }
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+    
+    @IBAction func bcPressed(_ sender: UITapGestureRecognizer) {
+        if bcViewBorder.isHidden == true {
+            bcViewBorder.isHidden = false
+            bcSort = true
+        } else {
+            bcViewBorder.isHidden = true
+            bcSort = false
+        }
+        print("BC Sort:" + String(bcSort))
+    }
+    
+    @IBAction func sortPressed(_ sender: UIButton) {
+        var sortedEventList = Events()
+        print(categorySort)
+        if categorySort == "" {
+            for event in originalEvents.eventsArray {
+                sortedEventList.eventsArray.append(event)
+            }
+        } else {
+            for event in originalEvents.eventsArray {
+                if event.categoryOfEvent == categorySort {
+                    sortedEventList.eventsArray.append(event)
+                }
+            }
+        }
+        let tempSortedList = Events()
+        if bcSort == true {
+            for event in sortedEventList.eventsArray {
+                if event.eventOrg == "BC" {
+                    tempSortedList.eventsArray.append(event)
+                }
+            }
+            sortedEventList = tempSortedList
+        }
+        events = sortedEventList
+        tableView.reloadData()
+    }
+}
+extension EventListViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return events.eventsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! EventCell
+        cell.configureCell(event: events.eventsArray[indexPath.row])
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 62
     }
-    */
+    
+    
+}
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+
+extension EventListViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return categories.count
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if row == 0 {
+            categorySort = ""
+        }
+        else {
+            categorySort = categories[row]
+        }
     }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return categories[row]
     }
-    */
-
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var pickerLabel = view as? UILabel //changing pickerView text size
+        
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel!.font = UIFont(name: "Montserrat", size: 15)
+            pickerLabel?.textAlignment = NSTextAlignment.center
+        }
+        if component == 0 {
+            pickerLabel?.text = categories[row]
+        }
+        return pickerLabel!
+    }
 }
